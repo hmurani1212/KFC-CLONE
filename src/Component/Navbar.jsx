@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 const Navbar = () => {
@@ -6,7 +6,24 @@ const Navbar = () => {
     const [nav, setnav] = useState(false)
     const HandleNavbar = () => {
         setnav(!nav);
-    }
+    };
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+          // Check if the clicked element is not part of the navbar
+          if (event.target.closest('#navbar') === null) {
+            // Modify the navbar visibility when clicked outside
+            setnav(false);
+          }
+        };
+    
+        // Add a click event listener to the document
+        document.addEventListener('click', handleClickOutside);
+    
+        // Clean up the event listener on component unmount
+        return () => {
+          document.removeEventListener('click', handleClickOutside);
+        };
+      }, []);
     return (
         <>
             <nav className="border-gray-200  bg-black dark:bg-gray-900 md:ml-10 fixed top-0 left-0 w-full z-10">

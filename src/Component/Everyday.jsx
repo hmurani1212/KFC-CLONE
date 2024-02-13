@@ -4,7 +4,7 @@ import { addToCart } from '../redux/features/cartSlice';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import Data from "./Data";
+// import Data from "./Data";
 const Everyday = forwardRef((props, ref) => {
    const [products, setProducts] = useState([]);
    useEffect(() => {
@@ -34,9 +34,9 @@ const Everyday = forwardRef((props, ref) => {
    return (
       <div ref={ref} className="relative">
       <h1 className="text-2xl mt-56  font-bold">Everyday VALUE</h1>
-      {Data.length > 0 ? (
+      {products.length > 0 ? (
          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {Data.map((element) => {
+            {products.map((element) => {
                return (
                   <div key={element.id}>
                      <div className="max-w-sm border border-black shadow-slate-600 bg-black rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 my-6">
@@ -47,11 +47,11 @@ const Everyday = forwardRef((props, ref) => {
                            </div>
                         </div>
                         <div className="p-5">
-                           <a>
+                           <p>
                               <h5 className="mb-2 text-2xl font-bold text-white tracking-tight dark:text-white">
                                  {element.title.slice(0, 20)}
                               </h5>
-                           </a>
+                           </p>
                            <p className="mb-3 text-white font-normal dark:text-gray-400">
                               {element.description.slice(0, 30)}.....
                               <p className="text-xl font-bold">RS {element.price}</p>

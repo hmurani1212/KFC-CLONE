@@ -99,12 +99,12 @@ function Sign() {
                                 Remember me
                             </label>
                         </div>
-                        <a
+                        <p
                             href="#"
                             className="ms-auto text-sm text-blue-700 hover:underline dark:text-blue-500"
                         >
                             Lost Password?
-                        </a>
+                        </p>
                     </div>
                     <button
                         type="submit"

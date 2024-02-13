@@ -74,12 +74,12 @@ function Login() {
                                 Remember me
                             </label>
                         </div>
-                        <a
-                            href="#"
+                        <Link
+                            to="#"
                             className="ms-auto text-sm text-blue-700 hover:underline dark:text-blue-500"
                         >
                             Lost Password?
-                        </a>
+                        </Link>
                     </div>
                     <button
                         type="submit"

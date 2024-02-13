@@ -9,6 +9,7 @@ import Login from './Component/Login';
 import Profile from './Component/Profile';
 import Delivery from './Delivery/Delivery';
 import Footer from './Component/Footer';
+import KommunicateChat from './chatBoat/KommunicateChat';
 function App() {
   return (
     <div>
@@ -23,6 +24,7 @@ function App() {
           <Route path="Profile" element={<Profile />} />
           <Route path="Delivery" element={<Delivery />} />
           <Route path="Footer" element={<Footer />} />
+          <Route path="KommunicateChat" element={<KommunicateChat />} />
         </Route>
       </Routes>
     </BrowserRouter>

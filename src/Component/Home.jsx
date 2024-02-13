@@ -5,6 +5,7 @@ import PROMOTION from "./PROMOTION";
 import SIGNATURE from "./SIGNATURE";
 import SHARING from "./SHARING";
 import Footer from "./Footer";
+import KommunicateChat from "../chatBoat/KommunicateChat";
 const Home = () => {
     const everydayRef = useRef(null);
     const alaRef = useRef(null);
@@ -17,7 +18,7 @@ const Home = () => {
     };
     // Snacks-&-Beverages     Midnight (Start at 12 am)
     return (
-        <div className="md:ml-10">
+        <div className="md:ml-10 md:block">
             <div className="md:ml-10 fixed top-20 left-0 z-10 bg-black w-full">
                 <button onClick={() => scrollToComponent(everydayRef)} className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
                     EVERYDAY VALUE
@@ -42,6 +43,7 @@ const Home = () => {
             <SIGNATURE ref={signatureRef} />
             <SHARING ref={sharingRef} />
             <Footer />
+            <KommunicateChat/>
         </div>
     );
 };

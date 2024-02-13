@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, removeToCart, removeSingleIteams, emptycartIteam } from '../redux/features/cartSlice';
 import axios from 'axios';
@@ -10,6 +10,7 @@ function OrderDetails() {
   const [totalquantity, setTotalQuantity] = useState(0);
   const dispatch = useDispatch();
   const [userLocation, setUserLocation] = useState(null);
+  console.log(totalprice,totalquantity, userLocation)
   // add to cart
   const handleIncrement = (e) => {
     dispatch(addToCart(e))
@@ -33,49 +34,53 @@ function OrderDetails() {
 
   }
   // count total price
-  const total = () => {
-    let totalprice = 0
-    carts.map((ele, ind) => {
-      totalprice = ele.price * ele.qnty + totalprice
-    });
-    setPrice(totalprice)
-  }
+  useEffect(() => {
+    const total = () => {
+       let totalprice = 0;
+       carts.map((ele) => {
+          totalprice = ele.price * ele.qnty + totalprice;
+          return null; // Add this line to satisfy array-callback-return
+       });
+       setPrice(totalprice);
+    };
+
+    total();
+ }, [carts, setPrice]);
   // count total quantity
-  const countquantity = () => {
-    let totalquantity = 0
-    carts.map((ele, ind) => {
-      totalquantity = ele.qnty + totalquantity
-    });
-    setTotalQuantity(totalquantity)
-  }
-
   useEffect(() => {
-    total()
-  }, [total])
+    const countquantity = () => {
+       let totalquantity = 0;
+       carts.map((ele) => {
+          totalquantity = ele.qnty + totalquantity;
+          return null; // Add this line to satisfy array-callback-return
+       });
+       setTotalQuantity(totalquantity);
+    };
 
-  useEffect(() => {
-    countquantity()
-  }, [countquantity]);
+    countquantity();
+ }, [carts, setTotalQuantity]);
   const [name, setname] = useState("");
   const [price, setprice] = useState("");
-  const [location, setlocation] = useState("");
   const [FoodDetail, setFoodDetail] = useState("");
   const [quantity, setqnty] = useState("");
-  const setdata = () => {
+  console.log(name, price, FoodDetail, quantity)
+  const setdata = useCallback(() => {
     if (carts.length > 0) {
       carts.map((item) => {
         setname(item.title);
-        setprice(item.price)
-        setFoodDetail(item.description)
-        setqnty(item.qnty)
-      })
+        setprice(item.price);
+        setFoodDetail(item.description);
+        setqnty(item.qnty);
+        return null; // Add this line to satisfy array-callback-return
+      });
     } else {
-      console.log("empty")
+      console.log("empty");
     }
-  }
+  }, [carts, setname, setprice, setFoodDetail, setqnty]);
+
   useEffect(() => {
-    setdata()
-  }, [])
+    setdata();
+  }, [setdata]);
   const Senddata = async (item) => {
     try {
       // Request user's location
@@ -83,7 +88,7 @@ function OrderDetails() {
         (position) => {
           const { latitude, longitude } = position.coords;
           setUserLocation({ latitude, longitude });
-  
+
           // Send order data with location
           sendOrderData(item, { type: 'Point', coordinates: [longitude, latitude] });
         },
@@ -104,10 +109,10 @@ function OrderDetails() {
       alert('Error during purchase');
     }
   };
-  
+
   const sendOrderData = async (item, location) => {
     const getAuth = localStorage.getItem("AuthToken");
-    
+
     // Check if AuthToken is present
     if (!getAuth) {
       // AuthToken is not present, redirect the user to the sign-in page
@@ -116,9 +121,9 @@ function OrderDetails() {
       window.location.href = '/Sign';
       return; // Stop further execution
     }
-  
+
     try {
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:5000/api/v1/CreateOrder",
         {
           name: item.title,
@@ -133,7 +138,7 @@ function OrderDetails() {
           },
         }
       );
-  
+
       // Assuming you want to clear the cart after a successful purchase
       dispatch(removeSingleIteams(item.id));
       alert("Purchase Successful");
@@ -142,8 +147,8 @@ function OrderDetails() {
       alert("Error during purchase");
     }
   };
-  
-  
+console.log(emptycart)
+
   return (
     <div className='text-4xl mt-20 overflow-hidden'>
       <div className='row justify-content-center m-0'>

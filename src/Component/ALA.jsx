@@ -45,11 +45,11 @@ const ALA = forwardRef((props, ref) => {
                               </div>
                            </div>
                            <div className="p-5">
-                              <a>
+                              <p>
                                  <h5 className="mb-2 text-2xl font-bold text-white tracking-tight dark:text-white">
                                     {element.title.slice(0, 20)}
                                  </h5>
-                              </a>
+                              </p>
                               <p className="mb-3 text-white font-normal dark:text-gray-400">
                                  {element.description.slice(0, 30)}.....
                                  <p className="text-xl font-bold">RS {element.price}</p>
