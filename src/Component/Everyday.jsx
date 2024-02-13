@@ -48,13 +48,13 @@ const Everyday = forwardRef((props, ref) => {
                         </div>
                         <div className="p-5">
                            <p>
-                              <h5 className="mb-2 text-2xl font-bold text-white tracking-tight dark:text-white">
+                              <h5 className="mb-2 text-sm md:text-2xl font-bold text-white tracking-tight dark:text-white">
                                  {element.title.slice(0, 20)}
                               </h5>
                            </p>
-                           <p className="mb-3 text-white font-normal dark:text-gray-400">
+                           <p className="mb-3 text-sm md:text-2xl text-white font-normal dark:text-gray-400">
                               {element.description.slice(0, 30)}.....
-                              <p className="text-xl font-bold">RS {element.price}</p>
+                              <p className="text-sm md:text-2xl font-bold">RS {element.price}</p>
                            </p>
                            <div className="text-center relative top-9">
                               <button
