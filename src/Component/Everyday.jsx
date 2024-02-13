@@ -43,7 +43,7 @@ const Everyday = forwardRef((props, ref) => {
                         <h1 className="float-right top-0 right-0 bottom-0 relative"><FavoriteBorderIcon/></h1>
                         <div className="text-center justify-center">
                            <div className="flex items-center justify-center mt-3">
-                              <img className="rounded-t-lg h-48 md:h-72" src={element.image} alt="" />
+                              <img className="rounded-t-lg h-40 md:h-72" src={element.image} alt="" />
                            </div>
                         </div>
                         <div className="p-5">
