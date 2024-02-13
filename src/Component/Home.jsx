@@ -25,7 +25,7 @@ const Home = () => {
     return (
         <div className="md:ml-10 md:block">
             <div className="mr-8 relative top-32 md:top-28 w-full mb-10" >
-                <DensityMediumIcon className="" onClick={HandleNav} />
+                <DensityMediumIcon className="ml-5" onClick={HandleNav} />
             </div>
             <div>
 
