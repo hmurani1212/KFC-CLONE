@@ -7,23 +7,23 @@ const Navbar = () => {
     const HandleNavbar = () => {
         setnav(!nav);
     };
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-          // Check if the clicked element is not part of the navbar
-          if (event.target.closest('#navbar') === null) {
-            // Modify the navbar visibility when clicked outside
-            setnav(false);
-          }
-        };
+    // useEffect(() => {
+    //     const handleClickOutside = (event) => {
+    //       // Check if the clicked element is not part of the navbar
+    //       if (event.target.closest('#navbar') === null) {
+    //         // Modify the navbar visibility when clicked outside
+    //         setnav(false);
+    //       }
+    //     };
     
-        // Add a click event listener to the document
-        document.addEventListener('click', handleClickOutside);
+    //     // Add a click event listener to the document
+    //     document.addEventListener('click', handleClickOutside);
     
-        // Clean up the event listener on component unmount
-        return () => {
-          document.removeEventListener('click', handleClickOutside);
-        };
-      }, []);
+    //     // Clean up the event listener on component unmount
+    //     return () => {
+    //       document.removeEventListener('click', handleClickOutside);
+    //     };
+    //   }, []);
     return (
         <>
             <nav className="border-gray-200  bg-black dark:bg-gray-900 md:ml-10 fixed top-0 left-0 w-full z-10">
@@ -47,7 +47,7 @@ const Navbar = () => {
                     <button
                         data-collapse-toggle="navbar-default"
                         type="button"
-                        className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm  rounded-lg md:hidden  focus:outline-none focus:ring-2 bg bg-black text-white"
+                        className="inline-flex items-center  md:my-0 p-2 w-10 h-10 justify-center text-sm  rounded-lg md:hidden  focus:outline-none focus:ring-2 bg bg-black text-white"
                         aria-controls="navbar-default"
                         aria-expanded="false"
                         onClick={HandleNavbar}>
