@@ -10,6 +10,10 @@ import Profile from './Component/Profile';
 import Delivery from './Delivery/Delivery';
 import Footer from './Component/Footer';
 import KommunicateChat from './chatBoat/KommunicateChat';
+import UpdateProfile from './Component/UpdateProfile';
+import Payment from './Payment/Payment';
+import OrderDetails1 from './Component/OrderDetails1';
+import Purchase from './Component/Purchase';
 function App() {
   return (
     <div>
@@ -25,6 +29,10 @@ function App() {
           <Route path="Delivery" element={<Delivery />} />
           <Route path="Footer" element={<Footer />} />
           <Route path="KommunicateChat" element={<KommunicateChat />} />
+          <Route path="UpdateProfile" element={<UpdateProfile />} />
+          <Route path="Payment" element={<Payment />} />
+          <Route path="OrderDetails1" element={<OrderDetails1 />} />
+          <Route path="Purchase" element={<Purchase />} />
         </Route>
       </Routes>
     </BrowserRouter>

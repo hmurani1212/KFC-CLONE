@@ -90,7 +90,7 @@ function Admin() {
             {index + 1}
           </p>
           <div id={`map-${index}`} className='order-map' style={{ height: '200px' }}>"Map"</div>
-          <a className="block max-w-sm p-6 my-5 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+          <p className="block max-w-sm p-6 my-5 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             <h5 className="mb-2 text-xl tracking-tight text-gray-900 dark:text-white">
               {element.name}
             </h5>
@@ -103,7 +103,7 @@ function Admin() {
             <p className='text-black'>
               {element.price}
             </p>
-          </a>
+          </p>
         </div>
       ))}
     </div>

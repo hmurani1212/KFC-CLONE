@@ -6,7 +6,6 @@ import SIGNATURE from "./SIGNATURE";
 import SHARING from "./SHARING";
 import Footer from "./Footer";
 import KommunicateChat from "../chatBoat/KommunicateChat";
-import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 const Home = () => {
     const [nav, setnav] = useState(false)
     const everydayRef = useRef(null);
@@ -25,7 +24,7 @@ const Home = () => {
     return (
         <div className="md:ml-10 md:block">
             <div className="mr-8 relative top-32 md:top-28 w-full mb-10" >
-               <p className="underline ml-6" onClick={HandleNav}>View More</p>
+               <p className="underline ml-6 cursor-pointer block md:hidden" onClick={HandleNav}>View More</p>
             </div>
             <div>
 

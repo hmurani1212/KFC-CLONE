@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, } from "react";
 import { Link, Outlet } from "react-router-dom";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 const Navbar = () => {
@@ -70,7 +70,7 @@ const Navbar = () => {
                     </button>
                     <div className="hidden w-full md:block md:w-auto" id="navbar-default">
                         <ul className="font-medium bg-black flex flex-col p-4 md:p-0 mt-4 border  rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-black dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-                            <Link to="/OrderDetails">
+                            <Link to="/OrderDetails1">
                                 <button
                                     type="button"
                                     className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"

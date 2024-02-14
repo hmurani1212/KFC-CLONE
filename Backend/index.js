@@ -28,7 +28,8 @@ app.use(cors());
 // Use the router returned by the order module
 const orderRouter = require('./routes/order')(io, Order);
 app.use('/api/v1', orderRouter);
-app.use("/ap2/v2", require("./routes/User"))
+app.use("/ap2/v2", require("./routes/User"));
+app.use("/ap3/v3", require("./routes/Payment"))
 
 io.on('connection', (socket) => {
   console.log('A user connected');

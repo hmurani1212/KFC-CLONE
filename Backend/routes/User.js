@@ -12,7 +12,7 @@ router.post('/Create', async (req, res) => {
     const { name, email, Username, phone, Cpassword, password } = req.body
     console.log(req.body)
     try {
-       
+
         let user = await User.findOne({ email: req.body.email });
         if (user) {
             return res.status(401).json({ error: "Sorry, a user with this email already exists" });
@@ -42,7 +42,7 @@ router.post('/Create', async (req, res) => {
 
 // Creating Route2 Logiin Route 
 
-router.post("/Login",  async (req, res) => {
+router.post("/Login", async (req, res) => {
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email });
@@ -50,7 +50,7 @@ router.post("/Login",  async (req, res) => {
         if (!user) {
             return res.status(400).json({ msg: "User does not exist" });
         }
-        const passwordCompare =  bcrypt.compare(password, user.password);
+        const passwordCompare = bcrypt.compare(password, user.password);
         if (!passwordCompare) {
             return res.status(400).json({ error: "Password does not found that you enter" });
         }
@@ -86,4 +86,46 @@ router.get("/UserDetail", fetchUser, async (req, res) => {
         res.status(500).send("Error fetching user data");
     }
 });
+
+
+router.get("/getUsers", fetchUser, async (req,res) => {
+    const userId = req.user.id;
+    try {
+        const user = await User.findById(userId);
+        
+        if (!user) {
+            return res.status(400).send("User Not Found");
+        }
+        res.send(user)
+    }catch(error){
+       console.error(error.message);
+    }
+})
+router.put("/UpdateOneuser", fetchUser, async (req, res) => {
+    const userId = req.user.id;
+    
+    try {
+        const user = await User.findById(userId);
+        
+        if (!user) {
+            return res.status(400).send("User Not Found");
+        }
+
+        // Assuming you have request body with updated information
+        const { name, email, password } = req.body;
+
+        // Update user information
+        user.name = name;
+        user.email = email;
+        user.password = password;
+
+        // Save the updated user
+        await user.save();
+
+        res.status(200).send("User Updated Successfully");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+})
 module.exports = router;

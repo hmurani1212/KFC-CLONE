@@ -5,12 +5,13 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 function OrderDetails() {
   const { carts } = useSelector((state) => state.allCart);
-  console.log(carts)
+  console.log("Card Data", carts)
   const [totalprice, setPrice] = useState(0);
   const [totalquantity, setTotalQuantity] = useState(0);
   const dispatch = useDispatch();
   const [userLocation, setUserLocation] = useState(null);
-  console.log(totalprice,totalquantity, userLocation)
+  console.log(totalprice, totalquantity, userLocation);
+
   // add to cart
   const handleIncrement = (e) => {
     dispatch(addToCart(e))
@@ -36,29 +37,29 @@ function OrderDetails() {
   // count total price
   useEffect(() => {
     const total = () => {
-       let totalprice = 0;
-       carts.map((ele) => {
-          totalprice = ele.price * ele.qnty + totalprice;
-          return null; // Add this line to satisfy array-callback-return
-       });
-       setPrice(totalprice);
+      let totalprice = 0;
+      carts.map((ele) => {
+        totalprice = ele.price * ele.qnty + totalprice;
+        return null; // Add this line to satisfy array-callback-return
+      });
+      setPrice(totalprice);
     };
 
     total();
- }, [carts, setPrice]);
+  }, [carts, setPrice]);
   // count total quantity
   useEffect(() => {
     const countquantity = () => {
-       let totalquantity = 0;
-       carts.map((ele) => {
-          totalquantity = ele.qnty + totalquantity;
-          return null; // Add this line to satisfy array-callback-return
-       });
-       setTotalQuantity(totalquantity);
+      let totalquantity = 0;
+      carts.map((ele) => {
+        totalquantity = ele.qnty + totalquantity;
+        return null; // Add this line to satisfy array-callback-return
+      });
+      setTotalQuantity(totalquantity);
     };
 
     countquantity();
- }, [carts, setTotalQuantity]);
+  }, [carts, setTotalQuantity]);
   const [name, setname] = useState("");
   const [price, setprice] = useState("");
   const [FoodDetail, setFoodDetail] = useState("");
@@ -141,112 +142,130 @@ function OrderDetails() {
 
       // Assuming you want to clear the cart after a successful purchase
       dispatch(removeSingleIteams(item.id));
-      alert("Purchase Successful");
+      toast.success('your order successifully Send it will be send to you with in a week', {
+        position: "top-right",
+        autoClose: 3000, // 3 seconds
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+     
     } catch (error) {
       console.log(error);
-      alert("Error during purchase");
+      toast.error('Fail to purchase product try agin', {
+        position: "top-right",
+        autoClose: 3000, // 3 seconds
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
-console.log(emptycart)
+  console.log(emptycart)
 
   return (
-    <div className='text-4xl mt-20 overflow-hidden'>
-      <div className='row justify-content-center m-0'>
-        <div className='col-md-8 mt-5 mb-5 cardsdetails'>
-          <div className="card">
-            <div className="card-header bg-dark p-3">
-              <div className='card-header-flex'>
-                <h5 className='text-white m-0 font-bold my-6'>Cart Calculation{carts.length > 0 ? `(${carts.length})` : ""}</h5>
-                <div className='flex justify-center '>
-                  {carts.length > 0 ? (
-                    <button className='btn btn-danger mt-0 btn-sm text-center'>
-                      <i className='fa fa-trash-alt fa-sm mr-2'></i>
-                      <span className='text-2xl'>You Purchasing Data</span>
-                    </button>
-                  ) : ""}
+    <>
+      <div className='text-2xl mt-20 overflow-hidden'>
+        <div className='row justify-content-center m-0'>
+          <div className='col-md-8  cardsdetails'>
+          <h1 className='text-center'>Only Online Order payment by Hand</h1>
+            <div className="card">
+              <div className="card-header bg-dark p-3">
+                <div className='card-header-flex'>
+                  <h5 className='text-white m-0 font-bold '>Cart Calculation{carts.length > 0 ? `(${carts.length})` : ""}</h5>
+                  <div className='flex justify-center '>
+                    {carts.length > 0 ? (
+                      <button className='btn btn-danger mt-0 btn-sm text-center'>
+                        <span className='text-2xl'>You Purchasing Data</span>
+                      </button>
+                    ) : ""}
+                  </div>
+
+
                 </div>
-
-
               </div>
-            </div>
-            <div className="card-body p-0">
-              {carts.length === 0 ? (
-                <div className='cart-empty'>
-                  <p className='text-center'>Your Cart Is Empty</p>
-                </div>
-              ) : (
-                <div className="relative overflow-x-auto">
-                  <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                      <tr>
-                        <th scope="col" className="px-6 py-3 text-lg">
-                          Action
-                        </th>
-                        <th scope="col" className="px-6 py-3 text-lg">
-                          Product
-                        </th>
-                        <th scope="col" className="px-6 py-3 text-lg">
-                          Name
-                        </th>
-                        <th scope="col" className="px-6 py-3 text-lg">
-                          Price
-                        </th>
-                        <th scope="col" className="px-6 py-3 text-lg">
-                          Qty
-                        </th>
-                        <th scope="col" className="px-6 py-3 text-lg">
-                          Total Amount
-                        </th>
-                        <th scope="col" className="px-6 py-3 text-lg">
-                          Purcahse
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {carts.map((data, index) => (
-                        <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                          <td className="px-6 py-4">
-                            <button className='prdct-delete' onClick={() => handleDecrement(data.id)}>
-                              <i className='fa fa-trash-alt fa-2    xl mr-2'></i>
-                            </button>
-                          </td>
-                          <td className="px-6 py-4">
-                            <div className='product-img'><img src={data.imgdata} alt="" /></div>
-                          </td>
-                          <td className="px-6 py-4">
-                            <div className='product-name'><p>{data.dish}</p></div>
-                          </td>
-                          <td className="px-6 py-4" style={{ fontSize: "20px" }}>₹ {data.price}</td>
-                          <td className="px-6 py-4">
-                            <div className="prdct-qty-container">
-                              <button className='prdct-qty-btn' type='button' onClick={data.qnty <= 1 ? () => handleDecrement(data.id) : () => handleSingleDecrement(data)}>
-                                <i className='fa fa-xl fa-minus'></i>
-                              </button>
-                              <input type="text" className='text-center w-12' value={data.qnty} disabled name="" id="" style={{ fontSize: "20px" }} />
-                              <button className='prdct-qty-btn' type='button' onClick={() => handleIncrement(data)}>
-                                <i className='fa fa-xl fa-plus'></i>
-                              </button>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 " style={{ fontSize: "20px" }}>₹ {data.qnty * data.price}</td>
-                          <td className="px-6 py-4 " style={{ fontSize: "20px" }}>
-                            <button type="button" className="focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" onClick={() => Senddata(data)}>Purchase</button>
-                          </td>
+              <div className="card-body p-0">
+                {carts.length === 0 ? (
+                  <div className='cart-empty'>
+                    <p className='text-center'>Your Cart Is Empty</p>
+                  </div>
+                ) : (
+                  <div className="relative overflow-x-auto">
+                    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                      <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                          <th scope="col" className="px-6 py-3 text-lg">
+                            Action
+                          </th>
+                          <th scope="col" className="px-6 py-3 text-lg">
+                            Product
+                          </th>
+                          <th scope="col" className="px-6 py-3 text-lg">
+                            Name
+                          </th>
+                          <th scope="col" className="px-6 py-3 text-lg">
+                            Price
+                          </th>
+                          <th scope="col" className="px-6 py-3 text-lg">
+                            Qty
+                          </th>
+                          <th scope="col" className="px-6 py-3 text-lg">
+                            Total Amount
+                          </th>
+                          <th scope="col" className="px-6 py-3 text-lg">
+                            Purcahse
+                          </th>
                         </tr>
-                      ))}
+                      </thead>
+                      <tbody>
+                        {carts.map((data, index) => (
+                          <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <td className="px-6 py-4">
+                              <button className='prdct-delete' onClick={() => handleDecrement(data.id)}>
+                                <i className='fa fa-trash-alt fa-2    xl mr-2'></i>
+                              </button>
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className='h-10 w-10'><img src={data.image} alt="" /></div>
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className=''><p>{data.category}</p></div>
+                            </td>
+                            <td className="px-6 py-4" style={{ fontSize: "20px" }}>₹ {data.price}</td>
+                            <td className="px-6 py-4">
+                              <div className="prdct-qty-container">
+                                <button className='prdct-qty-btn' type='button' onClick={data.qnty <= 1 ? () => handleDecrement(data.id) : () => handleSingleDecrement(data)}>
+                                  <i className='fa fa-xl fa-minus'></i>
+                                </button>
+                                <input type="text" className='text-center w-12' value={data.qnty} disabled name="" id="" style={{ fontSize: "20px" }} />
+                                <button className='prdct-qty-btn' type='button' onClick={() => handleIncrement(data)}>
+                                  <i className='fa fa-xl fa-plus'></i>
+                                </button>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 " style={{ fontSize: "20px" }}>₹ {data.qnty * data.price}</td>
+                            <td className="px-6 py-4 " style={{ fontSize: "20px" }}>
+                              <button type="button" className="focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" onClick={() => Senddata(data)}>Purchase</button>
+                            </td>
+                          </tr>
+                        ))}
 
-                    </tbody>
+                      </tbody>
 
 
-                  </table>
+                    </table>
 
-                </div>
-              )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
+
   )
 };
 export default OrderDetails
