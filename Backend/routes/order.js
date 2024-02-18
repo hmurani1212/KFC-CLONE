@@ -6,18 +6,18 @@ module.exports = (io, Order) => {
   // POST route to create an order
   router.post('/createOrder', fetchUser, async (req, res) => {
     try {
-      const { name, FoodDetail, location, quantity, price } = req.body;
+      const { title,  FoodDetail, location, quantity, price } = req.body;
 
       // Check if required fields are provided
-      if (!name || !FoodDetail || !location || !location.coordinates || !location.type) {
+      if (!title || !FoodDetail || !location || !location.coordinates || !location.type) {
         return res.status(400).json({ error: 'Name, FoodDetail, Location (type and coordinates), quantity, and price are required fields.' });
       }
 
-      const user = await User.findById(req.user.id).select('name email');
+      const user = await User.findById(req.user.id).select('name email id');
 
       // Create the order with user details
       const order = new Order({
-        name,
+        title,
         FoodDetail,
         location: {
           type: location.type,
@@ -27,9 +27,7 @@ module.exports = (io, Order) => {
         price,
         user
       });
-
       await order.save();
-
       // Emit the 'orderCreated' event with the order details
       io.emit('orderCreated', order);
       res.status(200).json({ message: 'Order created successfully', order });
@@ -50,22 +48,25 @@ module.exports = (io, Order) => {
     }
   });
 
-  router.get('/UserOrder', fetchUser, async (req, res) => {
-    try {
-      const userId = req.user.id;
+ // Assuming you have required models and middleware appropriately
 
-      // Assuming you have an Order model with a 'user' field referencing the User model
-      const userOrders = await Order.find({ user: userId });
-
-      if (!userOrders || userOrders.length === 0) {
-        return res.status(404).json({ msg: 'No orders found for the user' });
-      }
-
-      res.json(userOrders);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Server Error');
+router.get('/UserOrder', fetchUser, async (req, res) => {
+  try {
+    // Assuming fetchUser middleware sets req.user correctly
+    const userId = req.user.id;
+    console.log(userId);
+    // Assuming you have an Order model with a 'user' field referencing the User model
+    const userOrders = await Order.find({ user: userId });
+    console.log(userOrders);
+    if (!userOrders || userOrders.length === 0) {
+      return res.status(404).json({ msg: 'No orders found for the user' });
     }
-  });
+    res.json(userOrders);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
+});
+
   return router;
 };

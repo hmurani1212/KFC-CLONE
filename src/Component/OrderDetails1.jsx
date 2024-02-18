@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, removeToCart, removeSingleIteams, emptycartIteam } from '../redux/features/cartSlice';
 import { loadStripe } from '@stripe/stripe-js';
-import OrderDetails from "./OrderDetails"
+import OrderDetails from "./OrderDetails";
+import axios from 'axios'
+import { toast } from 'react-toastify';
 const OrderDetails1 = () => {
 
   const { carts } = useSelector((state) => state.allCart);
-  console.log("Card Data", carts)
-
   const [totalprice, setPrice] = useState(0);
   const [totalquantity, setTotalQuantity] = useState(0);
-
+  const [userLocation, setUserLocation] = useState(null);
   const dispatch = useDispatch();
 
   // add to cart
@@ -62,10 +62,28 @@ const OrderDetails1 = () => {
   useEffect(() => {
     countquantity()
   }, [countquantity]);
-
+  const [Saveitem, setSaveitem]= useState({});
   // payment integration
   const makePayment = async () => {
-    try {
+    const firstCartItem = carts[0];
+    // Check if there's at least one item in the cart
+    if (firstCartItem) {
+      Senddata(firstCartItem);
+        // The rest of your code...
+    } else {
+      // Handle the case where the cart is empty
+      console.log('Cart is empty');
+    }
+       const getAuth = localStorage.getItem("AuthToken");
+    // // Check if AuthToken is present
+    if (!getAuth) {
+      // AuthToken is not present, redirect the user to the sign-in page
+      // You can use your preferred routing mechanism, for example, react-router-dom
+      // Replace '/signin' with the actual path of your sign-in page
+      window.location.href = '/Sign';
+      return; // Stop further execution
+    }
+     try {
       const stripe = await loadStripe("pk_test_51ON9IWGOffRjuiXbk0WFHxHCEvEI9m6sbuhnOgPANCiKkfsoobCRxXxmtX2B2MzDP9pMv0jLswEosM2cdF27HJnu00XnqW9N3j");
       const body = {
         products: carts
@@ -89,18 +107,101 @@ const OrderDetails1 = () => {
       console.error("Error during payment:", error);
     }
   };
-  const HandleChnage = () =>{
+  const HandleChnage = () => {
     setChangePayment(!ChangePayment)
     setChangePayment1(!ChangePayment1)
   }
   const [ChangePayment, setChangePayment] = useState(false);
   const [ChangePayment1, setChangePayment1] = useState(true);
+  const Senddata = async (item) => {
+    setSaveitem({item})
+    console.log("Saveitem", Saveitem)
+    try {
+      // Request user's location
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation({ latitude, longitude });
+
+          // Send order data with location
+          sendOrderData(item, { type: 'Point', coordinates: [longitude, latitude] });
+        },
+        (error) => {
+          console.error('Error getting user location:', error);
+          toast.error('Unable to track your current location. Please enable your location', {
+            position: "top-right",
+            autoClose: 3000, // 3 seconds
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        }
+      );
+    } catch (error) {
+      console.error('Error during purchase:', error);
+      alert('Error during purchase');
+    }
+  };
+
+  const sendOrderData = async (item, location) => {
+    const getAuth = localStorage.getItem("AuthToken");
+
+    // Check if AuthToken is present
+    if (!getAuth) {
+      // AuthToken is not present, redirect the user to the sign-in page
+      // You can use your preferred routing mechanism, for example, react-router-dom
+      // Replace '/signin' with the actual path of your sign-in page
+      window.location.href = '/Sign';
+      return; // Stop further execution
+    }
+
+    try {
+      await axios.post(
+        "http://localhost:5000/api/v1/CreateOrder",
+        {
+          title: item.title,
+          price: item.price,
+          location: location,
+          FoodDetail: item.description,
+          quantity: item.qnty,
+        },
+        {
+          headers: {
+            'auth-token': getAuth // Include the AuthToken in the headers
+          },
+        }
+      );
+
+      // Assuming you want to clear the cart after a successful purchase
+      dispatch(removeSingleIteams(item.id));
+      toast.success('your order successifully Send it will be send to you with in a week', {
+        position: "top-right",
+        autoClose: 3000, // 3 seconds
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+
+    } catch (error) {
+      console.log(error);
+      toast.error('Fail to purchase product try agin', {
+        position: "top-right",
+        autoClose: 3000, // 3 seconds
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
+  };
   return (
     <>
       <div className='text-center md:text-2xl mt-20'>
         <p className='text-xl mt-28'>if you dont want pay the payment online want to pay by Hand just Order Click<span className='underline text-blue-500 cursor-pointer mx-3' onClick={HandleChnage}>Here</span></p>
-       {ChangePayment1 && <div className='col-md-8 mt-5 mb-5 cardsdetails'>
-        <h1>Online payment and order</h1>
+        {ChangePayment1 && <div className='col-md-8 mt-5 mb-5 cardsdetails'>
+          <h1>Online payment and order</h1>
           <div className="card">
             <div className="card-header bg-dark p-3">
               <div className='card-header-flex'>
@@ -141,6 +242,9 @@ const OrderDetails1 = () => {
                           <th scope="col" class="px-6 py-3">
                             Total Price
                           </th>
+                          <th scope="col" class="px-6 py-3 hidden">
+                           Order
+                          </th>
                         </tr>
                       </thead>
                       {
@@ -176,6 +280,7 @@ const OrderDetails1 = () => {
                                     </div>
                                   </td>
                                   <td>₹ {data.qnty * data.price}</td>
+                                  <td><button className="hidden" onClick={() => Senddata(data)}>Order</button></td>
                                 </tr>
                               </tbody>
                             </>
@@ -194,7 +299,7 @@ const OrderDetails1 = () => {
           </div>
         </div>}
       </div>
-     {ChangePayment && <OrderDetails /> }
+      {ChangePayment && <OrderDetails />}
     </>
   )
 }

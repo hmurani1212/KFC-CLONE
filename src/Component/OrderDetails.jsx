@@ -83,6 +83,7 @@ function OrderDetails() {
     setdata();
   }, [setdata]);
   const Senddata = async (item) => {
+    console.log("Items", item)
     try {
       // Request user's location
       navigator.geolocation.getCurrentPosition(
@@ -127,7 +128,7 @@ function OrderDetails() {
       await axios.post(
         "http://localhost:5000/api/v1/CreateOrder",
         {
-          name: item.title,
+          title: item.title,
           price: item.price,
           location: location,
           FoodDetail: item.description,

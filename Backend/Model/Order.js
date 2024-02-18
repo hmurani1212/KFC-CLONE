@@ -4,10 +4,10 @@ const { Schema } = mongoose;
 
 const OrderSchema = new Schema({
   user: {
-    type: Schema.Types.ObjectId,
+    type: Schema.Types.Mixed,
     ref: "User"  // Assuming your user model is named "User"
   },
-  name: String,
+  title: String,
   FoodDetail: String,
   location: {
     type: {

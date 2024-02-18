@@ -4,6 +4,7 @@ import { addToCart } from '../redux/features/cartSlice';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+
 // import Data from "./Data";
 const Everyday = forwardRef((props, ref) => {
    const [products, setProducts] = useState([]);
@@ -31,16 +32,20 @@ const Everyday = forwardRef((props, ref) => {
          draggable: true,
      });
    }
+   const [Heart, setHeart] = useState(true)
+   const HandleHeart = () =>{
+
+   }
    return (
       <div ref={ref} className="relative">
       <h1 className="text-2xl mt-56  font-bold">Everyday VALUE</h1>
       {products.length > 0 ? (
-         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+         <div className="grid grid-cols-2 md:grid-cols-3  lg:grid-cols-4 gap-4">
             {products.map((element) => {
                return (
                   <div key={element.id}>
                      <div className="max-w-sm border border-black shadow-slate-600 bg-black rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 my-6">
-                        <h1 className="float-right top-0 right-0 bottom-0 relative"><FavoriteBorderIcon/></h1>
+                        <h1 className="float-right top-0 right-0 bottom-0 relative" onClick={HandleHeart}><FavoriteBorderIcon/></h1>
                         <div className="text-center justify-center">
                            <div className="flex items-center justify-center mt-3">
                               <img className="rounded-t-lg h-40 md:h-72" src={element.image} alt="" />
@@ -48,19 +53,18 @@ const Everyday = forwardRef((props, ref) => {
                         </div>
                         <div className="p-5">
                            <p>
-                              <h5 className="mb-2 text-sm md:text-2xl font-bold text-white tracking-tight dark:text-white">
+                              <h5 className="mb-2 text-sm md:text-xl font-bold text-white tracking-tight dark:text-white">
                                  {element.title.slice(0, 20)}
                               </h5>
                            </p>
-                           <p className="mb-3 text-sm md:text-2xl text-white font-normal dark:text-gray-400">
+                           <p className="mb-3 text-sm md:text-md text-white font-normal dark:text-gray-400">
                               {element.description.slice(0, 30)}.....
-                              <p className="text-sm md:text-2xl font-bold">RS {element.price}</p>
+                              <p className="text-sm  md:text-md font-bold">RS {element.price}</p>
                            </p>
                            <div className="text-center relative top-9">
                               <button
                                  className="inline-flex cursor-pointer items-center px-3 py-2 text-sm font-medium text-center text-white bg-zinc-700 rounded-lg dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                 onClick={() => send(element)}
-                              >
+                                 onClick={() => send(element)}>
                                  Add to Bucket
                               </button>
                            </div>

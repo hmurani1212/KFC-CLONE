@@ -13,7 +13,6 @@ const Home = () => {
     const promotionRef = useRef(null);
     const signatureRef = useRef(null);
     const sharingRef = useRef(null);
-
     const scrollToComponent = (ref) => {
         ref.current.scrollIntoView({ behavior: "smooth" });
     };
@@ -27,7 +26,6 @@ const Home = () => {
                <p className="underline ml-6 cursor-pointer block md:hidden" onClick={HandleNav}>View More</p>
             </div>
             <div>
-
                 {nav && <nav className="relative top-28 font-bold md:hidden block text-center w-full bg-orange-700" >
                     <p><li onClick={() => scrollToComponent(everydayRef)} className="cursor-pointer"> EVERYDAY VALUE</li></p>
                     <p > <li onClick={() => scrollToComponent(alaRef)} className="cursor-pointer"> ALA-CARTE-&-COMBOS</li></p>
